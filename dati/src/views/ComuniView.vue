@@ -1,32 +1,59 @@
-<template> <br><br>
-  <center>
-    <h1>PRECIPITAZIONI</h1>
-  </center>
-  <div class="container">
-    <table v-if="jsonData.length">
-      <thead>
-        <tr>
-          <th v-for="(value, key) in jsonData[0]" :key="key"
-            :class="{ 'text-left': key === 'Comuni', 'text-right': key !== 'Comuni' }">{{ key }}</th>
-          <th>Azioni</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(row, rowIndex) in top10ComuniCaldi" :key="rowIndex">
-          <td v-for="(value, key) in row" :key="key" :class="[
-            { 'text-left': key === 'Comuni', 'text-right': key !== 'Comuni', 'comune-name': key === 'Comuni' },
-            isEditing(rowIndex, key) ? 'editing' : ''
-          ]" @click="editCell(rowIndex, key)">
-            <span v-if="!isEditing(rowIndex, key)">{{ value }}</span>
-            <input v-else v-model="jsonData[rowIndex][key]">
-          </td>
-          <td>
-            <button class="save-button" @click="saveRow(rowIndex)">Salva</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+<template>
+  <div>
+    <div>
+      <center>
+      <br>
+        <h1>PRECIPITAZIONI(TOP 10)</h1>
+      </center>
+      <div class="container">
+        <table v-if="jsonData.length">
+          <thead>
+            <tr>
+              <th v-for="(value, key) in jsonData[0]" :key="key"
+                :class="{ 'text-left': key === 'Comuni', 'text-right': key !== 'Comuni' }">{{ key }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(row, rowIndex) in top10ComuniCaldi" :key="'precipitazioni-' + rowIndex">
+              <td v-for="(value, key) in row" :key="key" :class="[
+                { 'text-left': key === 'Comuni', 'text-right': key !== 'Comuni', 'comune-name': key === 'Comuni' }
+              ]">
+                {{ value }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+<br>
+<br>
+    <div>
+      <center>
+        <h1>TEMPERATURE(TOP 10)</h1>
+      </center>
+      <div class="container">
+        <table v-if="jsonData.length">
+          <thead>
+            <tr>
+              <th v-for="(value, key) in jsonData[0]" :key="'temperature-header-' + key"
+                :class="{ 'text-left': key === 'Comuni', 'text-right': key !== 'Comuni' }">{{ key }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(row, rowIndex) in top10ComuniCaldi" :key="'temperature-' + rowIndex">
+              <td v-for="(value, key) in row" :key="'temperature-' + key" :class="[
+                { 'text-left': key === 'Comuni', 'text-right': key !== 'Comuni', 'comune-name': key === 'Comuni' }
+              ]">
+                {{ value }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
+  <br>
+  <br>
 </template>
 
 <script>
@@ -39,7 +66,7 @@ export default {
       jsonData: [],
       originalData: [],
       editedCells: [],
-      localStorageKey: 'precipitazioni_data'
+      localStorageKey: 'temperature_data'
     }
   },
   computed: {
@@ -60,7 +87,7 @@ export default {
   methods: {
     async loadExcelFile() {
       try {
-        const response = await fetch(new URL('@/assets/precipitazioni.xlsx', import.meta.url));
+        const response = await fetch(new URL('@/assets/temperature.xlsx', import.meta.url));
         const arrayBuffer = await response.arrayBuffer();
         const data = new Uint8Array(arrayBuffer);
         const workbook = XLSX.read(data, { type: 'array' });
@@ -80,50 +107,15 @@ export default {
         console.error('Error loading Excel file:', error);
       }
     },
-    isEditing(rowIndex, key) {
-      return this.editedCells.some(cell => cell.rowIndex === rowIndex && cell.key === key);
-    },
-    editCell(rowIndex, key) {
-      if (!this.isEditing(rowIndex, key)) {
-        this.editedCells.push({ rowIndex, key });
-      }
-    },
-    saveRow(rowIndex) {
-      console.log('Salva riga:', this.jsonData[rowIndex]);
-      this.editedCells = this.editedCells.filter(cell => cell.rowIndex !== rowIndex);
-      this.updateExcelFile();
-      this.saveLocalData(); // Aggiunta la chiamata per salvare i dati dopo aver salvato le modifiche
-    },
     saveLocalData() {
       localStorage.setItem(this.localStorageKey, JSON.stringify(this.jsonData));
-      localStorage.setItem('dati1', JSON.stringify(this.top10ComuniCaldi));
-      console.log('Dati salvati:', JSON.parse(localStorage.getItem('dati1')));
+      localStorage.setItem('dati2', JSON.stringify(this.top10ComuniCaldi));
+      console.log('Dati salvati:', JSON.parse(localStorage.getItem('dati2')));
     },
     loadLocalData() {
       const localData = localStorage.getItem(this.localStorageKey);
       if (localData) {
         this.jsonData = JSON.parse(localData);
-      }
-    },
-    async updateExcelFile() {
-      try {
-        const worksheet = XLSX.utils.json_to_sheet(this.jsonData);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
-        const excelData = XLSX.write(workbook, { type: 'array', bookType: 'xlsx' });
-
-        // Invio dati al server per sovrascrivere il file Excel
-        await fetch('/api/update-excel', {
-          method: 'POST',
-          body: excelData,
-          headers: {
-            'Content-Type': 'application/octet-stream'
-          }
-        });
-
-        console.log('File Excel aggiornato con successo');
-      } catch (error) {
-        console.error('Errore durante l\'aggiornamento del file Excel:', error);
       }
     }
   }
@@ -157,24 +149,5 @@ th {
 
 .text-right {
   text-align: right;
-}
-
-.editing {
-  background-color: red;
-}
-
-.comune-name {
-  color: gray;
-}
-
-.save-button {
-  background-color: yellow;
-  border: 1px solid #ccc;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-.save-button:hover {
-  background-color: #ffea00;
 }
 </style>

@@ -1,16 +1,14 @@
 <template>
-  <center><h1>VELIQI DATI-METEOCLIMATICI</h1></center>
-  <nav>
-    <div class="navbar">
-      <button @click="goHome" :class="{ active: currentRoute === '/' }">PRECIPITAZIONI</button>
-      <button @click="goAbout" :class="{ active: currentRoute === '/about' }">TEMPERATURE</button>
-      <button @click="goGrafici" :class="{ active: currentRoute === '/grafici' }">GRAFICI</button>  
-      <button @click="goComuni" :class="{ active: currentRoute === '/comuni' }">CALDE PRECIPITAZIONI</button>
-      <button @click="goComunii" :class="{ active: currentRoute === '/comunii' }">CALDE TEMPERATURE</button>
-      <button @click="goGraficii" :class="{ active: currentRoute === '/graficii' }">GRAFICI 2</button>
-      <button @click="goRegioni" :class="{ active: currentRoute === '/regioni' }">REGIONI</button>
-      <button @click="goRegionii" :class="{ active: currentRoute === '/regionii' }">REGIONI GRAFICI</button>
-    </div>
+
+  <nav class="navbar">
+  <br>
+    <button @click="goToRoute('/')" :class="{ active: currentRoute === '/' }">PRECIPITAZIONI</button>
+    <button @click="goToRoute('/about')" :class="{ active: currentRoute === '/about' }">TEMPERATURE</button>
+    <button @click="goToRoute('/grafici')" :class="{ active: currentRoute === '/grafici' }">GRAFICI</button>
+    <button @click="goToRoute('/comuni')" :class="{ active: currentRoute === '/comuni' }">10 CITTA'PIU'CALDE</button>
+    <button @click="goToRoute('/graficii')" :class="{ active: currentRoute === '/graficii' }">GRAFICI 2</button>
+    <button @click="goToRoute('/regioni')" :class="{ active: currentRoute === '/regioni' }">REGIONI</button>
+    <button @click="goToRoute('/regionii')" :class="{ active: currentRoute === '/regionii' }">REGIONI GRAFICI</button>
   </nav>
   <router-view/>
 </template>
@@ -25,35 +23,14 @@ export default {
   created() {
     this.currentRoute = this.$route.path;
   },
-  methods: {
-    goHome() {
-      this.$router.push('/');
-    },
-    goAbout() {
-      this.$router.push('/about');
-    },
-    goGrafici() {
-      this.$router.push('/grafici');
-    },
-    goComuni() {
-      this.$router.push('/comuni');
-    },
-    goComunii() {
-      this.$router.push('/comunii');
-    },
-    goRegioni() {
-      this.$router.push('/regioni');
-    },
-    goGraficii() {
-      this.$router.push('/graficii');
-    },
-    goRegionii() {
-      this.$router.push('/regionii');
+  watch: {
+    '$route'(to) {
+      this.currentRoute = to.path;
     }
   },
-  watch: {
-    '$route'(to,) {
-      this.currentRoute = to.path;
+  methods: {
+    goToRoute(route) {
+      this.$router.push(route);
     }
   }
 };
@@ -62,8 +39,8 @@ export default {
 <style>
 .navbar {
   display: flex;
-  justify-content: center;
-  padding: 10px;
+  justify-content: space-evenly;
+  padding: 10px 0;
 }
 
 .navbar button {
@@ -74,11 +51,11 @@ export default {
   cursor: pointer;
   border-radius: 20px;
   padding: 10px 20px;
-  margin-right: 10px;
+  transition: background-color 0.3s ease;
 }
 
 .navbar button.active {
-  color: #42b983;
-  text-decoration: underline;
+  background-color: #82d8fa;
+  color: #fff;
 }
 </style>

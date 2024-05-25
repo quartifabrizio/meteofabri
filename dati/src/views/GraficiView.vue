@@ -1,5 +1,6 @@
 <template>
-  <div> <br><br>
+  <div>
+    <br><br>
     <!-- Grafico a barre delle precipitazioni -->
     <div v-if="precipitazioni.length">
       <h3>Grafico a Barre delle Precipitazioni</h3>
@@ -56,7 +57,8 @@ export default {
         yaxis: {
           title: {
             text: 'Millimetri (mm)'
-          }
+          },
+          tickAmount: 4 // Impostiamo il numero di tick a 4 per una scala minore, ogni 2000
         },
         fill: {
           opacity: 1
