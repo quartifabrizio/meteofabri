@@ -6,9 +6,7 @@
     <button @click="goToRoute('/about')" :class="{ active: currentRoute === '/about' }">TEMPERATURE</button>
     <button @click="goToRoute('/grafici')" :class="{ active: currentRoute === '/grafici' }">GRAFICI</button>
     <button @click="goToRoute('/comuni')" :class="{ active: currentRoute === '/comuni' }">10 CITTA'PIU'CALDE</button>
-    <button @click="goToRoute('/graficii')" :class="{ active: currentRoute === '/graficii' }">GRAFICI 2</button>
-    <button @click="goToRoute('/regioni')" :class="{ active: currentRoute === '/regioni' }">REGIONI</button>
-    <button @click="goToRoute('/regionii')" :class="{ active: currentRoute === '/regionii' }">REGIONI GRAFICI</button>
+    <button @click="goToRoute('/regionii')" :class="{ active: currentRoute === '/regionii' }">REGIONI</button>
   </nav>
   <router-view/>
 </template>
@@ -41,12 +39,13 @@ export default {
   display: flex;
   justify-content: space-evenly;
   padding: 10px 0;
+  background-color: aliceblue;
 }
 
 .navbar button {
   font-weight: bold;
-  color: #2c3e50;
-  background-color: #ccc;
+  color: #f1efef;
+  background-color: #bde1ee;
   border: none;
   cursor: pointer;
   border-radius: 20px;

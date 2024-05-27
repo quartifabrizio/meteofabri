@@ -2,19 +2,19 @@
   <div>
     <br><br>
     <center>
-      <h1>TEMPERATURE ANNUALI</h1>
-    </center>
+      <h1>Temperature Annuali</h1>
+      </center>
     <div class="container">
       <input type="text" v-model="searchQuery" placeholder="Cerca comune" class="search-input">
       <table v-if="filteredData.length">
         <thead>
           <tr>
-            <th v-for="header in tableHeaders" :key="header">{{ header }}</th>
+            <th v-for="header in tableHeaders" :key="header" class="table-header">{{ header }}</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(row, rowIndex) in filteredData" :key="rowIndex">
-            <td v-for="(value, key) in row" :key="key">
+            <td v-for="(value, key) in row" :key="key" class="table-cell">
               {{ value }}
             </td>
           </tr>
@@ -23,8 +23,7 @@
       <p v-else>Nessun comune trovato.</p>
     </div>
   </div>
-  <br>
-  <br>
+  <br><br>
 </template>
 
 <script>
@@ -101,7 +100,7 @@ export default {
   width: 100%;
   box-sizing: border-box;
   border-radius: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid #4295ef;
 }
 
 table {
@@ -112,12 +111,21 @@ table {
 th,
 td {
   border: 1px solid;
-  padding: 8px;
+  padding: 16px; /* Aumenta la dimensione delle celle */
   text-align: center; /* Allinea il testo al centro */
+  font-family: 'Arial', sans-serif; /* Font migliore */
+  font-size: 14px; /* Dimensione font migliorata */
 }
 
-th {
-  background-color: #f2f2f2;
+th.table-header {
+  background-color: aliceblue;
   font-weight: bold;
+  color: #258cf2db; /* Colore azzurro per gli indici delle colonne */
+  font-size: 18px; /* Aumenta la dimensione del font delle intestazioni */
+}
+
+td.table-cell {
+  font-family: 'Arial', sans-serif; /* Font migliore */
+  font-size: 14px; /* Dimensione font migliorata */
 }
 </style>

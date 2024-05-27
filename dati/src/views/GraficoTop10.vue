@@ -2,17 +2,15 @@
   <div>
     <div>
       <center>
-        <br>
+      <br>
         <h1>Precipitazioni(TOP 10)</h1>
-        <br>
       </center>
       <div class="container">
         <table v-if="jsonData.length">
           <tbody>
-            <tr v-for="(row, rowIndex) in top10ComuniPiovosi" :key="'precipitazioni-' + rowIndex" :class="{'highlighted-row': rowIndex === 0}">
-              <td v-for="(value, key, index) in row" :key="key" :class="[
-                { 'text-left': key === 'Comuni', 'text-right': key !== 'Comuni', 'comune-name': key === 'Comuni' },
-                { 'hide-column': index === 0 } // Add this class to hide the first column
+            <tr v-for="(row, rowIndex) in top10ComuniCaldi" :key="'precipitazioni-' + rowIndex">
+              <td v-for="(value, key) in row" :key="key" :class="[
+                { 'text-left': key === 'Comuni', 'text-right': key !== 'Comuni', 'comune-name': key === 'Comuni' }
               ]">
                 {{ value }}
               </td>
@@ -21,20 +19,18 @@
         </table>
       </div>
     </div>
-    <br>
-    <br>
+<br>
+<br>
     <div>
       <center>
         <h1>Temperature(TOP 10)</h1>
-        <br>
       </center>
       <div class="container">
         <table v-if="jsonData.length">
           <tbody>
-            <tr v-for="(row, rowIndex) in top10ComuniCaldi" :key="'temperature-' + rowIndex" :class="{'highlighted-row': rowIndex === 0}">
-              <td v-for="(value, key, index) in row" :key="'temperature-' + key" :class="[
-                { 'text-left': key === 'Comuni', 'text-right': key !== 'Comuni', 'comune-name': key === 'Comuni' },
-                { 'hide-column': index === 0 } // Add this class to hide the first column
+            <tr v-for="(row, rowIndex) in top10ComuniCaldi" :key="'temperature-' + rowIndex">
+              <td v-for="(value, key) in row" :key="'temperature-' + key" :class="[
+                { 'text-left': key === 'Comuni', 'text-right': key !== 'Comuni', 'comune-name': key === 'Comuni' }
               ]">
                 {{ value }}
               </td>
@@ -67,12 +63,6 @@ export default {
         .slice()
         .sort((a, b) => b.Temperature - a.Temperature)
         .slice(0, 10);
-    },
-    top10ComuniPiovosi() {
-      return this.jsonData
-        .slice()
-        .sort((a, b) => b.Precipitazioni - a.Precipitazioni)
-        .slice(0, 10);
     }
   },
   mounted() {
@@ -80,7 +70,7 @@ export default {
     if (!this.jsonData.length) {
       this.loadExcelFile();
     }
-    this.saveLocalData();
+    this.saveLocalData(); // Aggiunta la chiamata per salvare i dati appena la pagina si apre
   },
   methods: {
     async loadExcelFile() {
@@ -93,6 +83,7 @@ export default {
         const worksheet = workbook.Sheets[firstSheetName];
         let json = XLSX.utils.sheet_to_json(worksheet);
 
+        // Rimuove intestazioni vuote
         json = json.filter(row => Object.values(row).some(cell => cell !== ''));
 
         this.jsonData = json;
@@ -118,6 +109,7 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 .container {
   margin: 0 5%;
@@ -132,7 +124,7 @@ th,
 td {
   border: 1px solid;
   padding: 8px;
-  text-align: center;
+  text-align: center; /* Aggiunto per centrare il testo */
 }
 
 th {
@@ -146,12 +138,5 @@ th {
 
 .text-right {
   text-align: right;
-}
-
-.highlighted-row {
-  background-color: aliceblue;
-  font-weight: bold;
-  color: #4295ef; /* Colore azzurro per gli indici delle colonne */
-  font-size: 18px; /* Aumenta la dimensione del font delle intestazioni */
 }
 </style>

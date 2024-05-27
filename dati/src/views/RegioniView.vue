@@ -1,40 +1,51 @@
 <template>
-  <div> <br><br>
+  <div>
+    <br><br>
     <div class="tables-container">
-      <div class="table-wrapper">
-        <h4>Temperatura Per Regione</h4>
-        <table v-if="regioni.length">
-          <thead>
-            <tr>
-              <th>Città</th>
-              <th>Temperatura Media (°C)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in regioni" :key="index">
-              <td>{{ item.regione }}</td>
-              <td>{{ (item.temps.reduce((a, b) => a + b, 0) / item.temps.length).toFixed(2) }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="table-wrapper">
-        <h4>Precipitazioni Per Regione</h4>
-        <table v-if="regioni.length">
-          <thead>
-            <tr>
-              <th>Città</th>
-              <th>Precipitazioni Medie</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item, index) in regioni" :key="index">
-              <td>{{ item.regione }}</td>
-              <td>{{ (item.precips.reduce((a, b) => a + b, 0) / item.precips.length).toFixed(2) }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <table class="layout-table">
+        <tr>
+          <td>
+            <div class="table-wrapper">
+              <h4>Temperatura Per Regione</h4>
+              <table v-if="regioni.length">
+                <thead>
+                  <tr>
+                    <th>Città</th>
+                    <th>Temperatura Media (°C)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in regioni" :key="index">
+                    <td>{{ item.regione }}</td>
+                    <td>{{ (item.temps.reduce((a, b) => a + b, 0) / item.temps.length).toFixed(2) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="table-wrapper">
+              <h4>Precipitazioni Per Regione</h4>
+              <table v-if="regioni.length">
+                <thead>
+                  <tr>
+                    <th>Città</th>
+                    <th>Precipitazioni Medie</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in regioni" :key="index">
+                    <td>{{ item.regione }}</td>
+                    <td>{{ (item.precips.reduce((a, b) => a + b, 0) / item.precips.length).toFixed(2) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
 </template>
@@ -202,11 +213,20 @@ export default {
 <style scoped>
 .tables-container {
   display: flex;
+  flex-direction: column; /* Change to column to stack tables vertically */
   justify-content: space-between;
 }
 
+.layout-table {
+  width: 100%;
+}
+
+.layout-table td {
+  vertical-align: top;
+}
+
 .table-wrapper {
-  width: 48%;
+  width: 100%;
 }
 
 table {

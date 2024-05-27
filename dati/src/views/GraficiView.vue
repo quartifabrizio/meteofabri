@@ -1,16 +1,14 @@
 <template>
   <div>
     <br><br>
-    <!-- Grafico a barre delle precipitazioni -->
+    <!-- Grafico a colonne delle precipitazioni -->
     <div v-if="precipitazioni.length">
-      <h3>Grafico a Barre delle Precipitazioni</h3>
       <apexchart type="bar" :options="precipitazioniChartOptions" :series="precipitazioniChartData"></apexchart>
     </div>
 
-    <!-- Grafico a barre della temperatura -->
+    <!-- Grafico a linee della temperatura -->
     <div v-if="temperature.length">
-      <h3>Grafico a Barre della Temperatura</h3>
-      <apexchart type="bar" :options="temperatureChartOptions" :series="temperatureChartData"></apexchart>
+      <apexchart type="line" :options="temperatureChartOptions" :series="temperatureChartData"></apexchart>
     </div>
   </div>
 </template>
@@ -58,7 +56,7 @@ export default {
           title: {
             text: 'Millimetri (mm)'
           },
-          tickAmount: 4 // Impostiamo il numero di tick a 4 per una scala minore, ogni 2000
+          tickAmount: 4 // Impostiamo il numero di tick a 4 per una scala minore
         },
         fill: {
           opacity: 1
@@ -85,27 +83,20 @@ export default {
       }],
       temperatureChartOptions: {
         chart: {
-          type: 'bar',
+          type: 'line',
           height: 350,
           toolbar: {
             show: false
           }
         },
-        colors: ['#FF6347'],
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            columnWidth: '55%',
-            endingShape: 'rounded'
-          }
-        },
+        colors: ['#53ea7d'],
         dataLabels: {
           enabled: false
         },
         stroke: {
-          show: true,
+          curve: 'smooth',
           width: 2,
-          colors: ['transparent']
+          colors: ['#53ea7d']
         },
         xaxis: {
           categories: []
@@ -114,9 +105,6 @@ export default {
           title: {
             text: 'Gradi Celsius (°C)'
           }
-        },
-        fill: {
-          opacity: 1
         },
         tooltip: {
           y: {
@@ -201,3 +189,44 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.container {
+  margin: 0 5%;
+}
+
+.search-input {
+  margin-bottom: 10px;
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px solid;
+  padding: 16px; /* Aumenta la dimensione delle celle */
+  text-align: center; /* Allinea il testo al centro */
+  font-family: 'Arial', sans-serif; /* Font migliore */
+  font-size: 14px; /* Dimensione font migliorata */
+}
+
+th.table-header {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  color: #007bff; /* Colore azzurro per gli indici delle colonne */
+  font-size: 20px; /* Aumenta la dimensione del font delle intestazioni */
+}
+
+td.table-cell {
+  font-family: 'Arial', sans-serif; /* Font migliore */
+  font-size: 14px; /* Dimensione font migliorata */
+}
+</style>

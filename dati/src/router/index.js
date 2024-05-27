@@ -3,7 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import GraficiView from '../views/GraficiView.vue';
 import ComuniiView from '../views/ComuniiView.vue';
 import RegioniView from '../views/RegioniView.vue';
-import GraficiiView from '../views/GraficiiView.vue';
+import GraficiiView from '../views/GraficoTop10.vue';
 import RegioniiView from '../views/RegioniiView.vue';
 
 const routes = [
